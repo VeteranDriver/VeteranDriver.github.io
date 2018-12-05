@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>iOS~一行代实现拍照、录像和相册功能 · Veteran Driver&#39;s Studio</title>
+    <title>iOS~图片裁剪圆角矩形 · Veteran Driver&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/">Veteran Driver&#39;s Studio</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">iOS~一行代实现拍照、录像和相册功能</a>
+                <a href="#" class="post-name">iOS~图片裁剪圆角矩形</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            iOS~一行代实现拍照、录像和相册功能
+            iOS~图片裁剪圆角矩形
             <!-- 404 -->
             
         </h1>
@@ -266,12 +266,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">533</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">223</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2018/12/05</span>
+                    <span class="post-intro-time">2017/01/09</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -395,11 +395,10 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p><img src="http://upload-images.jianshu.io/upload_images/1394392-81fc7e1f5b5436dc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片来自网络"><br><strong>前段时间工作中遇到了调用系统相机、相册需求，因此写了一个小工具，现在分享给大家。</strong></p>
+        <p>写了一个将矩形图片裁剪为圆角矩形的UIImage分类，可以避免大量的使用masksToBounds从而产生离屏渲染。</p>
 <hr>
-<p>1.概述<br>在iOS中要实现拍照、录像和相册最简单快捷的方法就是使用UIImagePickerController；本工具就是将UIImagePickerController做了进一步封装，使其更加便捷，让大家一行代码实现拍照、录像和相册功能。<br>2.接口方法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  单例</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*  @return VDCameraAndPhotoTool对象</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">+ (instancetype)shareInstance;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  调用系统相机录像</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*  @param vc         要调用相机的控制器</span></span><br><span class="line"><span class="comment">*  @param finishBack 录像完成的回调</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)showVideoInViewController:(UIViewController *)vc andFinishBack:(cameraReturn)finishBack;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  调用系统相机</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*  @param vc         要调用相机的控制器</span></span><br><span class="line"><span class="comment">*  @param finishBack 拍照完成的回调</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)showCameraInViewController:(UIViewController *)vc andFinishBack:(cameraReturn)finishBack;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  调用系统相册</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*  @param vc         要调用相册的控制器</span></span><br><span class="line"><span class="comment">*  @param finishBack 选择完成的回调</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)showPhotoInViewController:(UIViewController *)vc andFinishBack:(cameraReturn)finishBack;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  显示相机、录像或相册（弹出alert）</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*  @param vc        控制器</span></span><br><span class="line"><span class="comment">*  @param finsished 完成回掉</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)showImagePickerController:(UIViewController *)vc andFinishBack:(cameraReturn)finishBack;</span><br><span class="line">######3.使用演示</span><br><span class="line">- (IBAction)cameraClick:(id)sender &#123;</span><br><span class="line"></span><br><span class="line">[[VDCameraAndPhotoTool shareInstance] showCameraInViewController:self andFinishBack:^(UIImage *image,NSString *videoPath) &#123;</span><br><span class="line"></span><br><span class="line">[self removePlayerLayer];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (image) &#123;</span><br><span class="line"></span><br><span class="line">self.imgView.image = image;</span><br><span class="line">&#125; </span><br><span class="line">&#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)sheetClick:(id)sender &#123;</span><br><span class="line"></span><br><span class="line">[[VDCameraAndPhotoTool shareInstance] showImagePickerController:self andFinishBack:^(UIImage *image,NSString *videoPath) &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (image) &#123;<span class="comment">//图片</span></span><br><span class="line"></span><br><span class="line">[self removePlayerLayer];</span><br><span class="line"></span><br><span class="line">self.imgView.image = image;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (videoPath) &#123;<span class="comment">//视频</span></span><br><span class="line"></span><br><span class="line">self.imgView.image = nil;</span><br><span class="line"></span><br><span class="line">[self addPlayerLayer:videoPath];</span><br><span class="line">&#125;</span><br><span class="line">&#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)photoClick:(id)sender &#123;</span><br><span class="line"></span><br><span class="line">[[VDCameraAndPhotoTool shareInstance] showPhotoInViewController:self andFinishBack:^(UIImage *image,NSString *videoPath) &#123;</span><br><span class="line"></span><br><span class="line">[self removePlayerLayer];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (image) &#123;</span><br><span class="line"></span><br><span class="line">self.imgView.image = image;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)videoClick:(id)sender &#123;</span><br><span class="line"></span><br><span class="line">[[VDCameraAndPhotoTool shareInstance] showVideoInViewController:self andFinishBack:^(UIImage *image,NSString *videoPath) &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (videoPath) &#123;</span><br><span class="line"></span><br><span class="line">self.imgView.image = nil;</span><br><span class="line"></span><br><span class="line">[self addPlayerLayer:videoPath];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  移除player</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)removePlayerLayer &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (CALayer *layer <span class="keyword">in</span> self.imgView.layer.sublayers) &#123;</span><br><span class="line"></span><br><span class="line">if ([layer isKindOfClass:[AVPlayerLayer class]]) &#123;</span><br><span class="line"></span><br><span class="line">[layer removeFromSuperlayer];</span><br><span class="line">self.player = nil;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  添加player</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)addPlayerLayer:(NSString *)videoPath &#123;</span><br><span class="line"></span><br><span class="line">NSURL *url = [NSURL fileURLWithPath:videoPath];</span><br><span class="line">_player = [AVPlayer playerWithURL:url];</span><br><span class="line">AVPlayerLayer *playerLayer=[AVPlayerLayer playerLayerWithPlayer:_player];</span><br><span class="line">playerLayer.frame = self.imgView.frame;</span><br><span class="line">[self.imgView.layer addSublayer:playerLayer];</span><br><span class="line">[_player play];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>4.参考资料<br>如果对iOS多媒体方面不太熟悉的同学可以查阅以下资料以及系统文档:<br><a href="http://www.cnblogs.com/kenshincui/p/4186022.html#camera" target="_blank" rel="noopener">http://www.cnblogs.com/kenshincui/p/4186022.html#camera</a><br><a href="http://blog.csdn.net/chenyong05314/article/details/17357221" target="_blank" rel="noopener">http://blog.csdn.net/chenyong05314/article/details/17357221</a></p>
-<p>如果想深度自定义相机的可以查看这篇文章：<br><a href="http://www.jianshu.com/p/5860087c8981" target="_blank" rel="noopener">http://www.jianshu.com/p/5860087c8981</a><br>5.源码<br>源码放在<a href="https://github.com/VeteranDriver/VDCameraAndPhotoTool" target="_blank" rel="noopener">gitHub</a>上，欢迎指正，记得star哦！</p>
+<p>1.思路<br>首先利用CoreGraphics绘制出一个圆角矩形的上下文，然后将图片画到上下文中，最后通过上下文获取裁剪好的图片。<br>2.核心代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (UIImage *)setCornerWithRadius:(CGFloat)radius andSize:(CGSize)size</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//开启图形上下文</span></span><br><span class="line">    UIGraphicsBeginImageContext(size);</span><br><span class="line">    <span class="comment">//绘制圆角矩形</span></span><br><span class="line">    CGRect rect = CGRectMake(<span class="number">0</span>, <span class="number">0</span>, size.width, size.height);</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(radius, radius)];</span><br><span class="line">    <span class="comment">//将Path添加到上下文中</span></span><br><span class="line">    CGContextAddPath(UIGraphicsGetCurrentContext(), path.CGPath);</span><br><span class="line">    <span class="comment">//裁剪上下文</span></span><br><span class="line">    CGContextClip(UIGraphicsGetCurrentContext());</span><br><span class="line">    <span class="comment">//将图片绘制到上下文中</span></span><br><span class="line">    [self drawInRect:rect];</span><br><span class="line">    <span class="comment">//设置绘制模式</span></span><br><span class="line">    CGContextDrawPath(UIGraphicsGetCurrentContext(), kCGPathStroke);</span><br><span class="line">    <span class="comment">//获取图片</span></span><br><span class="line">    UIImage *output = UIGraphicsGetImageFromCurrentImageContext();</span><br><span class="line">    <span class="comment">//关闭上下文</span></span><br><span class="line">    UIGraphicsEndImageContext();</span><br><span class="line">        <span class="comment">//返回裁剪好的图片</span></span><br><span class="line">            <span class="keyword">return</span> output;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>3.源码<br>源码放在了<a href="https://github.com/VeteranDriver/VDCornerRadius" target="_blank" rel="noopener">github</a>上，欢迎指正，觉得不错的star一下呀！</p>
 
     </article>
     <!-- license  -->
@@ -412,8 +411,8 @@ height:50vh;
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href="/2017/12/05/iOS-图片裁剪圆角矩形/" title="iOS~图片裁剪圆角矩形">
-                    <div class="prevTitle">iOS~图片裁剪圆角矩形</div>
+                <a href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/" title="iOS~如何优雅的创建一个三级联动界面">
+                    <div class="prevTitle">iOS~如何优雅的创建一个三级联动界面</div>
                 </a>
             
         </li>
@@ -560,9 +559,18 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 2
+        Total : 3
         </div>
         <!-- search  -->
         
@@ -573,12 +581,12 @@ top:50vh;
     
     
     
-    <div class="archive-year"> 2018 </div>
+    <div class="archive-year"> 2017 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/05</span><a class="archive-post-title" href="/2018/12/05/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href="/2017/01/09/iOS-图片裁剪圆角矩形/">iOS~图片裁剪圆角矩形</a>
         </li>
     
     
@@ -587,12 +595,17 @@ top:50vh;
     
         </ul>
     
-    <div class="archive-year"> 2017 </div>
+    <div class="archive-year"> 2016 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/05</span><a class="archive-post-title" href="/2017/12/05/iOS-图片裁剪圆角矩形/">iOS~图片裁剪圆角矩形</a>
+            <span class="archive-post-date">10/08</span><a class="archive-post-title" href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/">iOS~如何优雅的创建一个三级联动界面</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
         </li>
     
     </ul></div>
