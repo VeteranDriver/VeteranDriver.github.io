@@ -271,7 +271,7 @@ height:50vh;
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2016/08/15</span>
+                    <span class="post-intro-time">2016/08/05</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -397,9 +397,9 @@ height:50vh;
     <article class="article-entry">
         <p><img src="http://upload-images.jianshu.io/upload_images/1394392-a6af5776b844a3f6.gif?imageMogr2/auto-orient/strip" alt="推拉.gif"><br><strong>之前在某款APP中看到了这种照片浏览效果，惊艳之余也用心思考并实现了出来，现在特地拿出来分享给大家。</strong></p>
 <hr>
-<p>###1.思路<br>看到这种效果的时候，首先猜测是用UICollectionView实现的，但是正常的UICollectionView的每个Cell都是首尾相连的，现在却是每个Cell都在上一个Cell的正下方，因此我猜测是在滑动的时候将下一个Cell插入到正在滑动的Cell的下方并随着Y轴方向的偏移量而移动。</p>
+<p>1.思路<br>看到这种效果的时候，首先猜测是用UICollectionView实现的，但是正常的UICollectionView的每个Cell都是首尾相连的，现在却是每个Cell都在上一个Cell的正下方，因此我猜测是在滑动的时候将下一个Cell插入到正在滑动的Cell的下方并随着Y轴方向的偏移量而移动。</p>
 <p>2.实现<br>核心代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)scrollViewDidScroll:(UIScrollView *)scrollView&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (scrollView.contentOffset.y &lt; <span class="number">0</span>) &#123;<span class="comment">//顶部第一个cell下拉不产生效果</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//获取到当前cell</span></span><br><span class="line">    int offset = scrollView.contentOffset.y / [UIScreen mainScreen].bounds.size.height ;</span><br><span class="line">    NSIndexPath *index = [NSIndexPath indexPathForItem:offset inSection:<span class="number">0</span>];</span><br><span class="line">    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:index];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取到下一个cell</span></span><br><span class="line">    NSIndexPath *nextIndex = [NSIndexPath indexPathForItem:offset + <span class="number">1</span> inSection:<span class="number">0</span>];</span><br><span class="line">    UICollectionViewCell *nextCell = [self.collectionView cellForItemAtIndexPath:nextIndex];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将下一个cell插入到当前cell的下方并随着Y轴方向的偏移量而移动</span></span><br><span class="line">    CGRect rect = nextCell.frame;</span><br><span class="line">    rect.origin.y = scrollView.contentOffset.y;</span><br><span class="line">    nextCell.frame = rect;</span><br><span class="line"></span><br><span class="line">    [self.collectionView insertSubview:nextCell belowSubview:cell];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//下拉设置透明度</span></span><br><span class="line">    <span class="keyword">if</span> (scrollView.contentOffset.y &lt; self.offsetY) &#123;</span><br><span class="line"></span><br><span class="line">        CGFloat progress = (self.offsetY - scrollView.contentOffset.y) / [UIScreen mainScreen].bounds.size.height;</span><br><span class="line">        cell.alpha = progress;</span><br><span class="line"></span><br><span class="line">        self.currentCell = nil;</span><br><span class="line">        self.currentCell = cell;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)scrollViewDidEndDecelerating:(UIScrollView *)scrollView&#123;</span><br><span class="line"></span><br><span class="line">    [self adjustCurrentCell:scrollView];<span class="comment">//暂时修复底部间隙BUG，待修改，还望大家指导</span></span><br><span class="line"></span><br><span class="line">    self.offsetY = scrollView.contentOffset.y;</span><br><span class="line">    self.currentCell.alpha = <span class="number">1.0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)adjustCurrentCell:(UIScrollView *)scrollView &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取到当前cell</span></span><br><span class="line">    NSInteger offset = scrollView.contentOffset.y / [UIScreen mainScreen].bounds.size.height ;</span><br><span class="line">    NSIndexPath *index = [NSIndexPath indexPathForItem:offset inSection:<span class="number">0</span>];</span><br><span class="line">    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:index];</span><br><span class="line"></span><br><span class="line">    CGRect rect = cell.frame;</span><br><span class="line">    rect.origin.y = self.collectionView.contentOffset.y;</span><br><span class="line">    cell.frame = rect;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>####3.源码<br>初步效果就这样了，具体使用就仁者见仁、智者见智了。源码放在<a href="https://github.com/VeteranDriver/VDDragDemo" target="_blank" rel="noopener">gitHub</a>上，欢迎大家指正，记得star哦！</p>
+<p>3.源码<br>初步效果就这样了，具体使用就仁者见仁、智者见智了。源码放在<a href="https://github.com/VeteranDriver/VDDragDemo" target="_blank" rel="noopener">gitHub</a>上，欢迎大家指正，记得star哦！</p>
 
     </article>
     <!-- license  -->
@@ -409,17 +409,12 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/" title="iOS~如何优雅的创建一个三级联动界面">
-                    <div class="nextTitle">iOS~如何优雅的创建一个三级联动界面</div>
+                <a href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/" title="iOS~一行代实现拍照、录像和相册功能">
+                    <div class="nextTitle">iOS~一行代实现拍照、录像和相册功能</div>
                 </a>
             
         </li>
         <li class="previous">
-            
-                <div class="prevSlogan">Previous Post</div>
-                <a href="/2016/08/15/iOS-判断应用是否有定位权限/" title="iOS~判断应用是否有定位权限">
-                    <div class="prevTitle">iOS~判断应用是否有定位权限</div>
-                </a>
             
         </li>
     </ul>
@@ -578,9 +573,20 @@ height:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 5
+        Total : 6
         </div>
         <!-- search  -->
         
@@ -610,12 +616,12 @@ height:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/08</span><a class="archive-post-title" href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/">iOS~如何优雅的创建一个三级联动界面</a>
+            <span class="archive-post-date">11/15</span><a class="archive-post-title" href="/2016/11/15/iOS-系统or自定义？总有一款转场动画让你独一无二（思路篇）/">iOS~系统or自定义？总有一款转场动画让你独一无二（思路篇）</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href="/2016/08/15/iOS-用UICollectionView实现酷炫的推拉效果/">iOS~用UICollectionView实现酷炫的推拉效果</a>
+            <span class="archive-post-date">10/08</span><a class="archive-post-title" href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/">iOS~如何优雅的创建一个三级联动界面</a>
         </li>
     
     
@@ -626,6 +632,11 @@ height:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/10</span><a class="archive-post-title" href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/05</span><a class="archive-post-title" href="/2016/08/05/iOS-用UICollectionView实现酷炫的推拉效果/">iOS~用UICollectionView实现酷炫的推拉效果</a>
         </li>
     
     </ul></div>

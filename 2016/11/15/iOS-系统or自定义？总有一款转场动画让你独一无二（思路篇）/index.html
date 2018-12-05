@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="John Doe">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="John Doe">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>iOS~系统or自定义？总有一款转场动画让你独一无二（思路篇） · Veteran Driver&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin="">
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin="">
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/">Veteran Driver&#39;s Studio</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">iOS~系统or自定义？总有一款转场动画让你独一无二（思路篇）</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href="/">Veteran Driver's Studio</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            iOS~系统or自定义？总有一款转场动画让你独一无二（思路篇）
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.2k</span>阅读时长: <span class="post-count reading-time">9 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2016/11/15</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><strong>在APP同质化日益严重的情况下，一款特别的转场动画会让用户有耳目一新的感觉，此篇文章重点讲解实现转场动画的思路，也为自己的学习之路做下笔记。哈哈，废话不多说，直接进入正题…….</strong></p>
+<hr>
+<p><strong>1.系统提供的CATransition</strong><br>CATransition是CAAnimation的派生类，提供了很多不同风格的动画，功能十分强大，完全可以应付日常开发。下面看看具体如何使用：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">CATransition *animation = [CATransition animation];    </span><br><span class="line"><span class="comment">//动画时间    </span></span><br><span class="line">animation.duration = <span class="number">1.0</span>f;    </span><br><span class="line"><span class="comment">//display mode, slow at beginning and end    </span></span><br><span class="line">animation.timingFunction = UIViewAnimationCurveEaseInOut;    </span><br><span class="line"><span class="comment">//在动画执行完时是否被移除    </span></span><br><span class="line">animation.removedOnCompletion = NO;    </span><br><span class="line"><span class="comment">//过渡效果    </span></span><br><span class="line">animation.type = @<span class="string">"pageCurl"</span>;  </span><br><span class="line"><span class="comment">/* 以下是基本的四种效果</span></span><br><span class="line"><span class="comment">kCATransitionPush 推入效果</span></span><br><span class="line"><span class="comment">kCATransitionMoveIn 移入效果</span></span><br><span class="line"><span class="comment">kCATransitionReveal 截开效果</span></span><br><span class="line"><span class="comment">kCATransitionFade 渐入渐出效果</span></span><br><span class="line"><span class="comment">以下API效果可以安全使用</span></span><br><span class="line"><span class="comment">cube 方块</span></span><br><span class="line"><span class="comment">suckEffect 三角</span></span><br><span class="line"><span class="comment">rippleEffect 水波抖动</span></span><br><span class="line"><span class="comment">pageCurl 上翻页</span></span><br><span class="line"><span class="comment">pageUnCurl 下翻页</span></span><br><span class="line"><span class="comment">oglFlip 上下翻转</span></span><br><span class="line"><span class="comment">cameraIrisHollowOpen 镜头快门开</span></span><br><span class="line"><span class="comment">cameraIrisHollowClose 镜头快门开 */</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//过渡方向    </span></span><br><span class="line">animation.subtype = kCATransitionFromRight;    </span><br><span class="line"><span class="comment">//暂时不知,感觉与Progress一起用的,如果不加,Progress好像没有效果    </span></span><br><span class="line">animation.fillMode = kCAFillModeForwards; </span><br><span class="line"><span class="comment">//动画开始(在整体动画的百分比).    </span></span><br><span class="line">animation.startProgress = <span class="number">0.3</span>;    </span><br><span class="line"><span class="comment">//动画停止(在整体动画的百分比).    </span></span><br><span class="line">animation.endProgress = <span class="number">0.7</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加到图层上</span></span><br><span class="line">view.layer.actions = [<span class="string">"backgroundColor"</span>:transition]</span><br><span class="line">view.layer.backgroundColor = UIColor.yellow.cgColor</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加到导航栏容器视图的图层上，在push和pop时会出现动画(暂时没有找到push对应的actionKey)</span></span><br><span class="line">self.navigationController?.view.layer.add(transition, <span class="attr">forKey</span>: nil)</span><br></pre></td></tr></table></figure></p>
+<p>#####2.自定义转场动画<br>自定义转场动画又可区分为非交互式和交互式，其区别为用户是否可以通过交互来实时的控制动画的进度，由浅到深，依次介绍；</p>
+<p>######2.1非交互式自定义转场动画</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1394392-31266c3c144155ff.gif?imageMogr2/auto-orient/strip" alt="非交互式.gif"></p>
+<p>此处用一个在导航控制器跳转页面时添加淡入淡出效果的案例展示其思路：<br>首先我们要实现导航控制器返回转场动画的代理方法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line">class VDCustomNavigationViewController: UINavigationController,UINavigationControllerDelegate &#123;</span><br><span class="line"></span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置代理</span></span><br><span class="line">        self.delegate = self</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//实现代理方法判断跳转状态并返回相应动画</span></span><br><span class="line">    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, <span class="keyword">from</span> fromVC: UIViewController, to toVC: UIViewController) -&gt; UIViewControllerAnimatedTransitioning?&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> operation &#123;</span><br><span class="line">        <span class="keyword">case</span> .push:</span><br><span class="line">            <span class="keyword">return</span> presentAnimator()</span><br><span class="line">        <span class="keyword">case</span> .pop:</span><br><span class="line">            <span class="keyword">return</span> dismissAnimator()</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> nil</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个代理方法需要我们返回一个遵循了UIViewControllerAnimatedTransitioning协议的对象，此协议一共有三个方法，其中两个是必须要实现的：<br>•        transitionDuration:  需要返回动画时长<br>•        animateTransition:  需要返回一个实现了动画逻辑的转场上下文<br>•        animationEnded:. 动画结束时候调用，此方法可以选择实现<br>实现代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">class presentAnimator: NSObject, UIViewControllerAnimatedTransitioning &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 动画时长</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - parameter transitionContext: 转场上下文</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - returns: 动画时长</span></span><br><span class="line">    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -&gt; TimeInterval &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2.0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 转场动画实现方法 － 一旦实现此函数，系统的动画方法，将由程序员负责</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - parameter transitionContext: 转场上下文 - 提供转场动画的所有细节</span></span><br><span class="line">    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1 获取视图</span></span><br><span class="line">        <span class="keyword">let</span> toView = transitionContext.view(forKey: UITransitionContextViewKey.to)!</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2 添加到容器视图</span></span><br><span class="line">        transitionContext.containerView.addSubview(toView)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3 设置透明度</span></span><br><span class="line">        toView.alpha = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 4 动画转场</span></span><br><span class="line">        UIView.animate(withDuration: transitionDuration(using: transitionContext), <span class="attr">animations</span>: &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//淡入</span></span><br><span class="line">            toView.alpha = <span class="number">1</span></span><br><span class="line">        &#125;) &#123; _ <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//返回完成状态</span></span><br><span class="line">            transitionContext.completeTransition(<span class="literal">true</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class dismissAnimator: NSObject, UIViewControllerAnimatedTransitioning &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 动画时长</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - parameter transitionContext: 转场上下文</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - returns: 动画时长</span></span><br><span class="line">    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -&gt; TimeInterval &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2.0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 转场动画实现方法 － 一旦实现此函数，系统的动画方法，将由程序员负责</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - parameter transitionContext: 转场上下文 - 提供转场动画的所有细节</span></span><br><span class="line">    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//1 获取toView</span></span><br><span class="line">        <span class="keyword">let</span> toView = transitionContext.view(forKey: UITransitionContextViewKey.to)!</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2 添加到容器视图</span></span><br><span class="line">        transitionContext.containerView.addSubview(toView)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3 获取fromView</span></span><br><span class="line">        <span class="keyword">let</span> fromView = transitionContext.view(forKey: UITransitionContextViewKey.from)!</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 4 添加到容器视图</span></span><br><span class="line">        transitionContext.containerView.addSubview(fromView)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 5 动画转场</span></span><br><span class="line">        UIView.animate(withDuration: transitionDuration(using: transitionContext), <span class="attr">animations</span>: &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//淡出</span></span><br><span class="line">            fromView.alpha = <span class="number">0</span></span><br><span class="line">        &#125;) &#123; _ <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//返回完成状态</span></span><br><span class="line">            transitionContext.completeTransition(<span class="literal">true</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在present控制器时添加自定义转场动画与导航控制器有所区别：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class fromViewController: UIViewController, UIViewControllerTransitioningDelegate&#123;</span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置转场动画代理</span></span><br><span class="line">        fromVC.transitioningDelegate = self</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 返回`提供展现动画`的对象</span></span><br><span class="line">    func animationController(forPresented presented: UIViewController, <span class="attr">presenting</span>: UIViewController, <span class="attr">source</span>: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> presentAnimator()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 返回`提供解除转场动画`的对象</span></span><br><span class="line">    func animationController(forDismissed dismissed: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dismissAnimator()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>######2.2交互式转场动画<br><img src="http://upload-images.jianshu.io/upload_images/1394392-bdc3253db27db261.gif?imageMogr2/auto-orient/strip" alt="交互式.gif"></p>
+<p>所谓交互式动画就是可以和用户实时交互，用户可以通过手势，重力等等控制动画的进度，因此我们要根据用户输入实时的更新动画进度，此处以present控制器时为例：<br>与非交互式转场动画不同的地方在于返回Animator时要多返回一个动画控制器<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 返回`提供解除转场动画`的对象</span></span><br><span class="line">func animationController(forDismissed dismissed: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">///返回解除转场的动画控制器</span></span><br><span class="line">func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -&gt; UIViewControllerInteractiveTransitioning? &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么这个动画控制器如何去实现呢？首先点进UIViewControllerInteractiveTransitioning协议中并没有发现有更新或者停止动画的方法，那我们继续进入UIViewControllerContextTransitioning转场上下文中看一下，发现了三个方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///更新转场动画</span></span><br><span class="line">public func updateInteractiveTransition(_ percentComplete: CGFloat)</span><br><span class="line"><span class="comment">///完成转场动画</span></span><br><span class="line">public func finishInteractiveTransition()</span><br><span class="line"><span class="comment">///取消转场动画</span></span><br><span class="line">public func cancelInteractiveTransition()</span><br></pre></td></tr></table></figure></p>
+<p>通过这三个方法我们可以根据用户输入实时的更新动画进度，但是这三个方法是iOS2.0就出现的，有点久远了，我通过查阅资料发现苹果在iOS7.0的SDK就已为我们提供了封装好的动画控制器UIPercentDrivenInteractiveTransition，UIPercentDrivenInteractiveTransition遵循了UIViewControllerInteractiveTransitioning协议，并封装了控制转场动画的方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//动画进度0~1</span></span><br><span class="line">open <span class="keyword">var</span> percentComplete: CGFloat &#123; get &#125;</span><br><span class="line"><span class="comment">//动画速度</span></span><br><span class="line">open <span class="keyword">var</span> completionSpeed: CGFloat</span><br><span class="line"><span class="comment">//更新动画需传入动画进度0~1</span></span><br><span class="line">open func update(_ percentComplete: CGFloat)</span><br><span class="line"><span class="comment">///取消动画，回到初始状态</span></span><br><span class="line">open func cancel()</span><br><span class="line"><span class="comment">//完成动画，结束转场</span></span><br><span class="line">open func finish()</span><br></pre></td></tr></table></figure></p>
+<p>因此我们只需要创建一个继承UIPercentDrivenInteractiveTransition的类，在这个类中拿到要进行转场动画的视图控制器，添加手势并根据手势触发状态控制转场动画进度即可：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">class VDPanInteractiveTransition: UIPercentDrivenInteractiveTransition &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 需要转场的视图控制器</span></span><br><span class="line">    <span class="keyword">var</span> presentingVC : UIViewController?</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 是否完成</span></span><br><span class="line">    <span class="keyword">var</span> shouldComplete = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 是否正在转场</span></span><br><span class="line">    <span class="keyword">var</span> interacting = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 设置需要转场的视图控制器</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - Parameter presentingVC: 需要转场的视图控制器</span></span><br><span class="line">    func setUpPresentingVC(presentingVC: UIViewController) &#123;</span><br><span class="line"></span><br><span class="line">        self.completionSpeed = <span class="number">1</span> - self.percentComplete</span><br><span class="line"></span><br><span class="line">        let pan = UIPanGestureRecognizer(target: self, action: #selector(pan(panGesture:)))</span><br><span class="line"></span><br><span class="line">        self.presentingVC = presentingVC</span><br><span class="line"></span><br><span class="line">        self.presentingVC?.view.addGestureRecognizer(pan)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 拖拽手势触发方法</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - Parameter panGesture: 拖拽手势</span></span><br><span class="line">    func pan(panGesture : UIPanGestureRecognizer) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取拖拽点</span></span><br><span class="line">        <span class="keyword">let</span> translation = panGesture.translation(<span class="keyword">in</span>: panGesture.view?.superview)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//判断手势状态并更新动画</span></span><br><span class="line">        <span class="keyword">switch</span> panGesture.state &#123;</span><br><span class="line">        <span class="keyword">case</span> .began:</span><br><span class="line"></span><br><span class="line">            self.interacting = <span class="literal">true</span></span><br><span class="line">            self.presentingVC?.dismiss(animated: <span class="literal">true</span>, <span class="attr">completion</span>: nil)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">case</span> .changed:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> pre = translation.y / <span class="number">300</span></span><br><span class="line"></span><br><span class="line">            self.shouldComplete = pre &gt; <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">            self.update(pre)</span><br><span class="line"></span><br><span class="line">            print(translation.y / <span class="number">300</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">case</span> .ended:</span><br><span class="line"></span><br><span class="line">            self.interacting = <span class="literal">false</span></span><br><span class="line">            <span class="keyword">if</span> (!self.shouldComplete || panGesture.state == .cancelled) &#123;</span><br><span class="line">            self.cancel()</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            self.finish()</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">case</span>.cancelled:</span><br><span class="line"></span><br><span class="line">            self.interacting = <span class="literal">false</span></span><br><span class="line">            <span class="keyword">if</span> (!self.shouldComplete) &#123;</span><br><span class="line">            self.cancel()</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            self.finish()</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>相应的interactiveDismissAnimator代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">class interactiveDismissAnimator: NSObject,UIViewControllerAnimatedTransitioning &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置动画时间</span></span><br><span class="line">    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -&gt; TimeInterval &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2.0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取到fromVc</span></span><br><span class="line">        <span class="keyword">let</span> fromVc = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取到toVc</span></span><br><span class="line">        <span class="keyword">let</span> toVc = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置finalFrame</span></span><br><span class="line">        <span class="keyword">let</span> screenBounds = UIScreen.main.bounds</span><br><span class="line">        <span class="keyword">let</span> initFrame = transitionContext.initialFrame(<span class="keyword">for</span>: fromVc!)</span><br><span class="line">        <span class="keyword">let</span> finalFrame = initFrame.offsetBy(dx: <span class="number">0</span>, <span class="attr">dy</span>: screenBounds.size.height)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//添加toView到上下文中</span></span><br><span class="line">        <span class="keyword">let</span> containerView = transitionContext.containerView</span><br><span class="line">        containerView.addSubview((toVc?.view)!)</span><br><span class="line">        containerView.sendSubview(toBack: (toVc?.view)!)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//开始动画</span></span><br><span class="line">        UIView.animate(withDuration: transitionDuration(using: transitionContext), <span class="attr">animations</span>:&#123;</span><br><span class="line"></span><br><span class="line">            fromVc?.view.frame = finalFrame</span><br><span class="line"></span><br><span class="line">        &#125;) &#123; _ <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//返回完成状态</span></span><br><span class="line">            transitionContext.completeTransition(!(transitionContext.transitionWasCancelled))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>相应的presentingVC代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">class VDPresentingViewController: UIViewController,UIViewControllerTransitioningDelegate &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> panInteractiveTransition = VDPanInteractiveTransition()</span><br><span class="line">    <span class="keyword">let</span> titleLabel = UILabel()</span><br><span class="line"></span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置视图</span></span><br><span class="line">        self.setUpUI()</span><br><span class="line"></span><br><span class="line">        <span class="comment">//把自己传递给转场动画控制器</span></span><br><span class="line">        panInteractiveTransition.setUpPresentingVC(presentingVC: self)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置代理</span></span><br><span class="line">        self.transitioningDelegate = self</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置视图</span></span><br><span class="line">    func setUpUI() &#123;</span><br><span class="line"></span><br><span class="line">        view.backgroundColor = UIColor.yellow</span><br><span class="line">        view.addSubview(titleLabel)</span><br><span class="line">        titleLabel.center = view.center</span><br><span class="line">        titleLabel.text = <span class="string">"向下拖拽"</span></span><br><span class="line">        titleLabel.font = UIFont.boldSystemFont(ofSize: <span class="number">20</span>)</span><br><span class="line">        titleLabel.textColor = UIColor.black</span><br><span class="line">        titleLabel.sizeToFit()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回`提供解除转场动画`的对象</span></span><br><span class="line">    func animationController(forDismissed dismissed: UIViewController) -&gt; UIViewControllerAnimatedTransitioning? &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> interactiveDismissAnimator()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回解除转场动画控制器</span></span><br><span class="line">    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -&gt; UIViewControllerInteractiveTransitioning? &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.panInteractiveTransition.interacting ? self.panInteractiveTransition : nil</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么将这个封装好的交互式动画控制器添加到导航控制中也是类似的，此处不再赘述；本文只是用了两个最简单的转场效果讲述了实现思路，至于更加酷炫的的转场动画就要靠大家的脑洞了。<br>学习参考资料：<br><a href="https://onevcat.com/2013/10/vc-transition-in-ios7/" target="_blank" rel="noopener">喵神的博客</a></p>
+<p>#####3.源码<br>源码放在<a href="https://github.com/VeteranDriver/VDAnimatedTransition" target="_blank" rel="noopener">GitHub</a>上了,欢迎指正，记得star哦！</p>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2017/01/09/iOS-图片裁剪圆角矩形/" title="iOS~图片裁剪圆角矩形">
+                    <div class="nextTitle">iOS~图片裁剪圆角矩形</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/" title="iOS~如何优雅的创建一个三级联动界面">
+                    <div class="prevTitle">iOS~如何优雅的创建一个三级联动界面</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:liyanbo6666@163.com" class="iconfont-archer email" title="email"></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/VeteranDriver" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://www.jianshu.com/u/c60389404c9e" class="iconfont-archer others" target="_blank" title="others"></a>
+            
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 6
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href="/2017/01/09/iOS-图片裁剪圆角矩形/">iOS~图片裁剪圆角矩形</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2016 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/15</span><a class="archive-post-title" href="/2016/11/15/iOS-系统or自定义？总有一款转场动画让你独一无二（思路篇）/">iOS~系统or自定义？总有一款转场动画让你独一无二（思路篇）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/08</span><a class="archive-post-title" href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/">iOS~如何优雅的创建一个三级联动界面</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href="/2016/08/15/iOS-判断应用是否有定位权限/">iOS~判断应用是否有定位权限</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/05</span><a class="archive-post-title" href="/2016/08/05/iOS-用UICollectionView实现酷炫的推拉效果/">iOS~用UICollectionView实现酷炫的推拉效果</a>
+        </li>
+    
+    </ul></div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br>
+    1、请确保node版本大于6.2<br>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "John Doe"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

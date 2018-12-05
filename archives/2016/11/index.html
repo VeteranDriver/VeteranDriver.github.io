@@ -346,22 +346,19 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/">
+        <a class="abstract-title" href="/2016/11/15/iOS-系统or自定义？总有一款转场动画让你独一无二（思路篇）/">
             
-                <span>iOS~如何优雅的创建一个三级联动界面</span>
+                <span>iOS~系统or自定义？总有一款转场动画让你独一无二（思路篇）</span>
         </a>
         <div class="abstract-content">
-            
-如上图所示，这是一个相当复杂的三级联动界面，如果我们毫无章法的将代码堆积在父视图控制器中，无疑会使控制器变的臃肿，代码的易读性将会很差，不便于日后维护；代码也是一种艺术，我们何不做的优雅一些？
+            在APP同质化日益严重的情况下，一款特别的转场动画会让用户有耳目一新的感觉，此篇文章重点讲解实现转场动画的思路，也为自己的学习之路做下笔记。哈哈，废话不多说，直接进入正题…….
 
-1.思路为了避免父视图控制器的代码臃肿，降低代码之间的耦合性，此处应采用组件化的设计模式，将控件从控制器中抽离出来，并可以自处业务逻辑，将父视图控制器作为一个纯粹的容器视图，传递数据的中间者；而子控件在被用户交互时通过代理、block回调或者通知将信息传递给父视图控制器，进而父视图控制器做出相应操作；那么我们首先分析一下这个界面的结构并分析如何抽取其中的控件：
-
-红线标出：左边的竖向选择列表和...
+1.系统提供的CATransitionCATransition是CAAnimation的派生类，提供了很多不同风格的动画，功能十分强大，完全可以应付日常开发。下面看看具体如何使用：123456789101112131415161718192021222324252627282930313233343536373839CATransition *animation = [CATransition animatio...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/10/08</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/11/15</span>
             </div>
             <!-- tags  -->
             
