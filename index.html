@@ -359,16 +359,26 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href="/2018/12/05/hello-world/">
+        <a class="abstract-title" href="/2018/12/05/iOS-一行代实现拍照、录像和相册功能/">
             
-                <span>Hello World</span>
+                <span>iOS~一行代实现拍照、录像和相册功能</span>
         </a>
         <div class="abstract-content">
-            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new "My New Post"
-More info: Writing
-Run server1$ hexo server
-More...
+            前段时间工作中遇到了调用系统相机、相册需求，因此写了一个小工具，现在分享给大家。
+
+######1.概述在iOS中要实现拍照、录像和相册最简单快捷的方法就是使用UIImagePickerController；本工具就是将UIImagePickerController做了进一步封装，使其更加便捷，让大家一行代码实现拍照、录像和相册功能。
+######2.接口方法/**
+
+单例*
+@return VDCameraAndPhotoTool对象*/
+
+
+(instancetype)shareInstance;/**
+
+
+调用系统相机录像*
+@param vc         要调用相机的控制器
+...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -570,7 +580,7 @@ More...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/05</span><a class="archive-post-title" href="/2018/12/05/hello-world/">Hello World</a>
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href="/2018/12/05/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
         </li>
     
     </ul></div>
