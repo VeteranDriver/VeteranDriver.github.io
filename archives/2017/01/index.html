@@ -346,6 +346,32 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href="/2017/01/11/iOS-自带loading动画的登陆按钮/">
+            
+                <span>iOS~自带loading动画的登陆按钮</span>
+        </a>
+        <div class="abstract-content">
+            闲来无事造个轮子，之前无意间看到一个酷炫的登陆按钮，点击之后会缩成一团旋转，loading完成后再展开，于是自己试着模仿了一下，效果图如下
+
+
+一.思路动画可以拆分为三部分：1.将矩形按钮缩成圆型，首先隐藏title，然后改变按钮的frame为位于中心点的以原有高度为边长正方形，最后裁切圆角，达到效果。2.旋转圆形按钮，首先需要添加一个白色小弧线，可以采用CAShapeLayer实现，然后让按钮绕Z轴旋转，可以采用CABasicAnimation实现。3.将圆形按钮展开成矩形，首先还原按钮的frame，然后还原圆角，最后显示title。二.核心代码1.对外接口12345678910111...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/01/11</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href="/2017/01/09/iOS-图片裁剪圆角矩形/">
             
                 <span>iOS~图片裁剪圆角矩形</span>
@@ -519,9 +545,26 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 6
+        Total : 7
         </div>
         <!-- search  -->
         
@@ -534,6 +577,11 @@
     
     <div class="archive-year"> 2017 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/11</span><a class="archive-post-title" href="/2017/01/11/iOS-自带loading动画的登陆按钮/">iOS~自带loading动画的登陆按钮</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -561,17 +609,17 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href="/2016/08/15/iOS-判断应用是否有定位权限/">iOS~判断应用是否有定位权限</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">08/10</span><a class="archive-post-title" href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/05</span><a class="archive-post-title" href="/2016/08/05/iOS-用UICollectionView实现酷炫的推拉效果/">iOS~用UICollectionView实现酷炫的推拉效果</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/05</span><a class="archive-post-title" href="/2016/08/05/iOS-判断应用是否有定位权限/">iOS~判断应用是否有定位权限</a>
         </li>
     
     </ul></div>

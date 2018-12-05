@@ -346,32 +346,6 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href="/2016/08/15/iOS-判断应用是否有定位权限/">
-            
-                <span>iOS~判断应用是否有定位权限</span>
-        </a>
-        <div class="abstract-content">
-            在特定场景下我们需要判断用户是否允许应用获取定位权限
-
-1.导入类库：1#import &lt;CoreLocation/CLLocationManager.h&gt;
-2.判断用户手机是否开启了定位服务：12345678910这里就要查看CLLocationManager的授权状态，此方法会返回当前授权状态：[CLLocationManager authorizationStatus]授权状态为枚举值：kCLAuthorizationStatusNotDetermined                  //用户尚未对该应用程序作出选择kCLAuthorizationStatusRe...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/08/15</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/">
             
                 <span>iOS~一行代实现拍照、录像和相册功能</span>
@@ -406,6 +380,32 @@
 
 1.思路看到这种效果的时候，首先猜测是用UICollectionView实现的，但是正常的UICollectionView的每个Cell都是首尾相连的，现在却是每个Cell都在上一个Cell的正下方，因此我猜测是在滑动的时候将下一个Cell插入到正在滑动的Cell的下方并随着Y轴方向的偏移量而移动。
 2.实现核心代码：123456789101112131415161718192021222324252627282930313233343536373839404142434445464...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/08/05</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href="/2016/08/05/iOS-判断应用是否有定位权限/">
+            
+                <span>iOS~判断应用是否有定位权限</span>
+        </a>
+        <div class="abstract-content">
+            在特定场景下我们需要判断用户是否允许应用获取定位权限
+
+1.导入类库：1#import &lt;CoreLocation/CLLocationManager.h&gt;
+2.判断用户手机是否开启了定位服务：12345678910这里就要查看CLLocationManager的授权状态，此方法会返回当前授权状态：[CLLocationManager authorizationStatus]授权状态为枚举值：kCLAuthorizationStatusNotDetermined                  //用户尚未对该应用程序作出选择kCLAuthorizationStatusRe...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -571,9 +571,26 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 6
+        Total : 7
         </div>
         <!-- search  -->
         
@@ -586,6 +603,11 @@
     
     <div class="archive-year"> 2017 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/11</span><a class="archive-post-title" href="/2017/01/11/iOS-自带loading动画的登陆按钮/">iOS~自带loading动画的登陆按钮</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -613,17 +635,17 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href="/2016/08/15/iOS-判断应用是否有定位权限/">iOS~判断应用是否有定位权限</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">08/10</span><a class="archive-post-title" href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/05</span><a class="archive-post-title" href="/2016/08/05/iOS-用UICollectionView实现酷炫的推拉效果/">iOS~用UICollectionView实现酷炫的推拉效果</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/05</span><a class="archive-post-title" href="/2016/08/05/iOS-判断应用是否有定位权限/">iOS~判断应用是否有定位权限</a>
         </li>
     
     </ul></div>
