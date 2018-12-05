@@ -346,124 +346,21 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href="/2016/11/15/iOS-系统or自定义？总有一款转场动画让你独一无二（思路篇）/">
+        <a class="abstract-title" href="/2017/03/28/Hybrid-iOS与JS交互那点事儿之JavaScriptCore/">
             
-                <span>iOS~系统or自定义？总有一款转场动画让你独一无二（思路篇）</span>
+                <span>Hybrid~iOS与JS交互那点事儿之JavaScriptCore</span>
         </a>
         <div class="abstract-content">
-            在APP同质化日益严重的情况下，一款特别的转场动画会让用户有耳目一新的感觉，此篇文章重点讲解实现转场动画的思路，也为自己的学习之路做下笔记。哈哈，废话不多说，直接进入正题…….
+            
+JavaScriptCore是iOS 7之后苹果推出的用于OC和swift与JS交互的框架，该框架提供了JS运行环境，数据转换以及调用协议等实用且强大的功能。但是相比WebViewJavaScriptBridge等第三方框架在使用过程中坑还是较多，使用人数较少；如项目中不想使用第三方hybrid交互框架的话，JavaScriptCore也是个不错的选择。
 
-1.系统提供的CATransitionCATransition是CAAnimation的派生类，提供了很多不同风格的动画，功能十分强大，完全可以应付日常开发。下面看看具体如何使用：123456789101112131415161718192021222324252627282930313233343536373839CATransition *animation = [CATransition animatio...
+一.简介首先导入头文件：1#import &lt;JavaScriptCore/JavaScriptCore.h&gt;
+点进去可以看到框架的主要成员12345#import &quot;JSContext.h&quot;#impo...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/11/15</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/">
-            
-                <span>iOS~如何优雅的创建一个三级联动界面</span>
-        </a>
-        <div class="abstract-content">
-            
-如上图所示，这是一个相当复杂的三级联动界面，如果我们毫无章法的将代码堆积在父视图控制器中，无疑会使控制器变的臃肿，代码的易读性将会很差，不便于日后维护；代码也是一种艺术，我们何不做的优雅一些？
-
-1.思路为了避免父视图控制器的代码臃肿，降低代码之间的耦合性，此处应采用组件化的设计模式，将控件从控制器中抽离出来，并可以自处业务逻辑，将父视图控制器作为一个纯粹的容器视图，传递数据的中间者；而子控件在被用户交互时通过代理、block回调或者通知将信息传递给父视图控制器，进而父视图控制器做出相应操作；那么我们首先分析一下这个界面的结构并分析如何抽取其中的控件：
-
-红线标出：左边的竖向选择列表和...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/10/08</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/">
-            
-                <span>iOS~一行代实现拍照、录像和相册功能</span>
-        </a>
-        <div class="abstract-content">
-            前段时间工作中遇到了调用系统相机、相册需求，因此写了一个小工具，现在分享给大家。
-
-1.概述在iOS中要实现拍照、录像和相册最简单快捷的方法就是使用UIImagePickerController；本工具就是将UIImagePickerController做了进一步封装，使其更加便捷，让大家一行代码实现拍照、录像和相册功能。2.接口方法123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/08/10</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2016/08/05/iOS-用UICollectionView实现酷炫的推拉效果/">
-            
-                <span>iOS~用UICollectionView实现酷炫的推拉效果</span>
-        </a>
-        <div class="abstract-content">
-            之前在某款APP中看到了这种照片浏览效果，惊艳之余也用心思考并实现了出来，现在特地拿出来分享给大家。
-
-1.思路看到这种效果的时候，首先猜测是用UICollectionView实现的，但是正常的UICollectionView的每个Cell都是首尾相连的，现在却是每个Cell都在上一个Cell的正下方，因此我猜测是在滑动的时候将下一个Cell插入到正在滑动的Cell的下方并随着Y轴方向的偏移量而移动。
-2.实现核心代码：123456789101112131415161718192021222324252627282930313233343536373839404142434445464...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/08/05</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2016/08/05/iOS-判断应用是否有定位权限/">
-            
-                <span>iOS~判断应用是否有定位权限</span>
-        </a>
-        <div class="abstract-content">
-            在特定场景下我们需要判断用户是否允许应用获取定位权限
-
-1.导入类库：1#import &lt;CoreLocation/CLLocationManager.h&gt;
-2.判断用户手机是否开启了定位服务：12345678910这里就要查看CLLocationManager的授权状态，此方法会返回当前授权状态：[CLLocationManager authorizationStatus]授权状态为枚举值：kCLAuthorizationStatusNotDetermined                  //用户尚未对该应用程序作出选择kCLAuthorizationStatusRe...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/08/05</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/03/28</span>
             </div>
             <!-- tags  -->
             
