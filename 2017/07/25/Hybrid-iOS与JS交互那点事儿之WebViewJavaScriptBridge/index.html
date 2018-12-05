@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="John Doe">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="John Doe">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Hybrid~iOS与JS交互那点事儿之WebViewJavaScriptBridge · Veteran Driver&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin="">
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin="">
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/">Veteran Driver&#39;s Studio</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Hybrid~iOS与JS交互那点事儿之WebViewJavaScriptBridge</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href="/">Veteran Driver's Studio</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Hybrid~iOS与JS交互那点事儿之WebViewJavaScriptBridge
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.6k</span>阅读时长: <span class="post-count reading-time">13 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2017/07/25</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><img src="http://upload-images.jianshu.io/upload_images/1394392-d737317e4241e47c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片来源于网络（侵删）.jpg"><br><strong><a href="https://github.com/marcuswestin/WebViewJavascriptBridge" target="_blank" rel="noopener">WebViewJavaScriptBridge</a>是被使用最多，也是最好用的移动端与JS交互的第三方框架，在此总结一下它的使用方法和内部原理。</strong></p>
+<hr>
+<p><strong>一.使用方法</strong><br><strong>iOS端（这里以UIWebView为例）</strong><br>1.导入头文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;WebViewJavascriptBridge.h&quot;</span><br></pre></td></tr></table></figure></p>
+<p>2.声明桥接对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property WebViewJavascriptBridge* bridge;</span><br></pre></td></tr></table></figure></p>
+<p>3.初始化桥接对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.bridge = [WebViewJavascriptBridge bridgeForWebView:webView];</span><br></pre></td></tr></table></figure></p>
+<p>4.注册函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[self.bridge registerHandler:@&quot;getUserInfo&quot; handler:^(id data, WVJBResponseCallback responseCallback) &#123;</span><br><span class="line"></span><br><span class="line">    NSDictionary *dict = @&#123;</span><br><span class="line">                            @&quot;userid&quot;:@&quot;0001&quot;</span><br><span class="line">                          &#125;;</span><br><span class="line"></span><br><span class="line">    responseCallback(dict);</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">@&quot;getUserInfo&quot;：与JS端共同商定的函数名，JS在调用时函数名必须一致</span><br><span class="line">data:函数调用时传递过来的数据</span><br><span class="line">responseCallback：函数被调用时传递过来的回调函数</span><br></pre></td></tr></table></figure></p>
+<p>4.调用函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[self.javaScriptBridge callHandler:@&quot;webViewRefresh&quot; data:nil responseCallback:^(id responseData) &#123;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">@&quot;webViewRefresh&quot;：与JS端共同商定的函数名，JS在注册时函数名必须一致</span><br><span class="line">data:调用函数时传递过去的数据</span><br><span class="line">responseCallback：调用函数时传递过去的回调函数</span><br><span class="line">responseData：传递过去的回调函数被JS调用时所传递过来的数据</span><br></pre></td></tr></table></figure></p>
+<p><strong>JS端</strong><br>1.声明一个函数，将此函数复制到JS文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function setupWebViewJavascriptBridge(callback) &#123;</span><br><span class="line">    if (window.WebViewJavascriptBridge) &#123; return callback(WebViewJavascriptBridge); &#125;</span><br><span class="line">    if (window.WVJBCallbacks) &#123; return window.WVJBCallbacks.push(callback); &#125;</span><br><span class="line">    window.WVJBCallbacks = [callback];</span><br><span class="line">    var WVJBIframe = document.createElement(&apos;iframe&apos;);</span><br><span class="line">    WVJBIframe.style.display = &apos;none&apos;;</span><br><span class="line">    WVJBIframe.src = &apos;https://__bridge_loaded__&apos;;</span><br><span class="line">    document.documentElement.appendChild(WVJBIframe);</span><br><span class="line">    setTimeout(function() &#123; document.documentElement.removeChild(WVJBIframe) &#125;, 0)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.注册或者调用交互方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">setupWebViewJavascriptBridge(function(bridge) &#123;</span><br><span class="line"></span><br><span class="line">    /* Initialize your app here */</span><br><span class="line"></span><br><span class="line">    bridge.registerHandler(&apos;JS Echo&apos;, function(data, responseCallback) &#123;</span><br><span class="line">        console.log(&quot;JS Echo called with:&quot;, data)</span><br><span class="line">        responseCallback(data)</span><br><span class="line">    &#125;)</span><br><span class="line">    bridge.callHandler(&apos;ObjC Echo&apos;, &#123;&apos;key&apos;:&apos;value&apos;&#125;, function responseCallback(responseData) &#123;</span><br><span class="line">        console.log(&quot;JS received response:&quot;, responseData)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p><strong>二.内部原理</strong><br>1.框架文件</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1394392-7df7fdda88a4ab25.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="20.pic.jpg"><br>① WebViewJavascriptBridgeBase中声明和实现了基础的方法和属性<br>② WebViewJavascriptBridge_js中是一段JS代码，在初始化时编译，用于交互<br>③ WebViewJavascriptBridge和WKWebViewJavascriptBridge是分别适应UIWebView和WKWebView的继承于WebViewJavascriptBridgeBase的子类<br>2.初始化</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1394392-e9cb5e6489dfaa4b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.pic.jpg"><br><img src="http://upload-images.jianshu.io/upload_images/1394392-28d9bcadc2cf6627.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.pic.jpg"><br>在JS文件被加载时会执行setupWebViewJavascriptBridge的方法，改变iframe.src，就会发起页面请求，从而被UIWebView的代理方法拦截到，执行injectJavascriptFile，编译WebViewJavascriptBridge_js，为后面的交互做好准备，这就是初始化的过程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function setupWebViewJavascriptBridge(callback) &#123;</span><br><span class="line">    if (window.WebViewJavascriptBridge) &#123; return callback(WebViewJavascriptBridge); &#125;</span><br><span class="line">    if (window.WVJBCallbacks) &#123; return window.WVJBCallbacks.push(callback); &#125;</span><br><span class="line">    window.WVJBCallbacks = [callback];</span><br><span class="line">    var WVJBIframe = document.createElement(&apos;iframe&apos;);</span><br><span class="line">    WVJBIframe.style.display = &apos;none&apos;;</span><br><span class="line">    WVJBIframe.src = &apos;https://__bridge_loaded__&apos;;</span><br><span class="line">    document.documentElement.appendChild(WVJBIframe);</span><br><span class="line">    setTimeout(function() &#123; document.documentElement.removeChild(WVJBIframe) &#125;, 0)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3.JS调用OC函数原理（这里以UIWebView为例）<br>首先需要OC注册函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[_bridge registerHandler:@&quot;testObjcCallback&quot; handler:^(id data, WVJBResponseCallback responseCallback) &#123;</span><br><span class="line">    NSLog(@&quot;testObjcCallback called: %@&quot;, data);</span><br><span class="line">    responseCallback(@&quot;Response from testObjcCallback&quot;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure></p>
+<p>OC注册函数需要调用WebViewJavascriptBridge的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)registerHandler:(NSString*)handlerName handler:(WVJBHandler)handler;</span><br></pre></td></tr></table></figure></p>
+<p>那么看一下它的做了什么<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler &#123;</span><br><span class="line">    _base.messageHandlers[handlerName] = [handler copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>它将handlerName为key，以handler为value储存在一个叫做messageHandlers的字典中，注册就完成了<br>然后需要JS调用OC注册好的函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bridge.callHandler(&apos;testObjcCallback&apos;, &#123;&apos;foo&apos;: &apos;bar&apos;&#125;, function(response) &#123;</span><br><span class="line">    log(&apos;JS got response&apos;, response)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>JS调用函数需要用到WebViewJavascriptBridge_js的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function callHandler(handlerName, data, responseCallback) &#123;</span><br><span class="line">    if (arguments.length == 2 &amp;&amp; typeof data == &apos;function&apos;) &#123;</span><br><span class="line">        responseCallback = data;</span><br><span class="line">        data = null;</span><br><span class="line">    &#125;</span><br><span class="line">    _doSend(&#123; handlerName:handlerName, data:data &#125;, responseCallback);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function _doSend(message, responseCallback) &#123;</span><br><span class="line">    if (responseCallback) &#123;</span><br><span class="line">        var callbackId = &apos;cb_&apos;+(uniqueId++)+&apos;_&apos;+new Date().getTime();</span><br><span class="line">        responseCallbacks[callbackId] = responseCallback;</span><br><span class="line">        message[&apos;callbackId&apos;] = callbackId;</span><br><span class="line">    &#125;</span><br><span class="line">    sendMessageQueue.push(message);</span><br><span class="line">    messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + &apos;://&apos; + QUEUE_HAS_MESSAGE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个方法将handlerName, data, responseCallback储存在message字典中，并将message字典储存在sendMessageQueue数组中，最后改变了iframe.src，发送请求</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1394392-93578bebe3a8de8e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="3.pic.jpg"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (NSString *)webViewJavascriptFetchQueyCommand &#123;</span><br><span class="line">    return @&quot;WebViewJavascriptBridge._fetchQueue();&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>被被UIWebView的代理方法拦截到之后首先执行JS方法WebViewJavascriptBridge._fetchQueue()，拿到要调用的函数的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function _fetchQueue() &#123;</span><br><span class="line">    var messageQueueString = JSON.stringify(sendMessageQueue);</span><br><span class="line">    sendMessageQueue = [];</span><br><span class="line">    return messageQueueString;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后执行OC的flushMessageQueue方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">- (void)flushMessageQueue:(NSString *)messageQueueString&#123;</span><br><span class="line">    if (messageQueueString == nil || messageQueueString.length == 0) &#123;</span><br><span class="line">        NSLog(@&quot;WebViewJavascriptBridge: WARNING: ObjC got nil while fetching the message queue JSON from webview. This can happen if the WebViewJavascriptBridge JS is not currently present in the webview, e.g if the webview just loaded a new page.&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    id messages = [self _deserializeMessageJSON:messageQueueString];</span><br><span class="line">    for (WVJBMessage* message in messages) &#123;</span><br><span class="line">        if (![message isKindOfClass:[WVJBMessage class]]) &#123;</span><br><span class="line">            NSLog(@&quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&quot;, [message class], message);</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        [self _log:@&quot;RCVD&quot; json:message];</span><br><span class="line"></span><br><span class="line">        NSString* responseId = message[@&quot;responseId&quot;];</span><br><span class="line">        if (responseId) &#123;//当OC调用JS注册的函数后执行回调方法时才有responseId，此处后面会介绍</span><br><span class="line">        </span><br><span class="line">            WVJBResponseCallback responseCallback = _responseCallbacks[responseId];</span><br><span class="line">            responseCallback(message[@&quot;responseData&quot;]);</span><br><span class="line">            [self.responseCallbacks removeObjectForKey:responseId];</span><br><span class="line">        &#125; else &#123;//当JS调用OC注册的函数</span><br><span class="line">        </span><br><span class="line">            WVJBResponseCallback responseCallback = NULL;</span><br><span class="line">            NSString* callbackId = message[@&quot;callbackId&quot;];</span><br><span class="line">            if (callbackId) &#123;//如果有JS的回调</span><br><span class="line">                responseCallback = ^(id responseData) &#123;</span><br><span class="line">                    if (responseData == nil) &#123;</span><br><span class="line">                        responseData = [NSNull null];</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    //注意此处添加了responseId，之后在WebViewJavascriptBridge_js的_dispatchMessageFromObjC方法中会用到</span><br><span class="line">                    WVJBMessage* msg = @&#123; @&quot;responseId&quot;:callbackId, @&quot;responseData&quot;:responseData &#125;;</span><br><span class="line">                    [self _queueMessage:msg];//执行JS回调函数</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                responseCallback = ^(id ignoreResponseData) &#123;</span><br><span class="line">                    // Do nothing</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            WVJBHandler handler = self.messageHandlers[message[@&quot;handlerName&quot;]];//根据函数名拿到handler</span><br><span class="line"></span><br><span class="line">            if (!handler) &#123;</span><br><span class="line">                NSLog(@&quot;WVJBNoHandlerException, No handler for message from JS: %@&quot;, message);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            handler(message[@&quot;data&quot;], responseCallback);//执行handler</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面我们再看一下JS的回调函数是如何被执行的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">- (void)_queueMessage:(WVJBMessage*)message &#123;</span><br><span class="line">    if (self.startupMessageQueue) &#123;</span><br><span class="line">    </span><br><span class="line">        [self.startupMessageQueue addObject:message];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">    </span><br><span class="line">        [self _dispatchMessage:message];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)_dispatchMessage:(WVJBMessage*)message &#123;</span><br><span class="line">    NSString *messageJSON = [self _serializeMessage:message pretty:NO];</span><br><span class="line">    [self _log:@&quot;SEND&quot; json:messageJSON];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\\&quot; withString:@&quot;\\\\&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\&quot;&quot; withString:@&quot;\\\&quot;&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\&apos;&quot; withString:@&quot;\\\&apos;&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\n&quot; withString:@&quot;\\n&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\r&quot; withString:@&quot;\\r&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\f&quot; withString:@&quot;\\f&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\u2028&quot; withString:@&quot;\\u2028&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\u2029&quot; withString:@&quot;\\u2029&quot;];</span><br><span class="line"></span><br><span class="line">    //执行JS的_handleMessageFromObjC拿到要执行的回调函数</span><br><span class="line">    NSString* javascriptCommand = [NSString stringWithFormat:@&quot;WebViewJavascriptBridge._handleMessageFromObjC(&apos;%@&apos;);&quot;, messageJSON];</span><br><span class="line"></span><br><span class="line">    //执行回调函数</span><br><span class="line">    if ([[NSThread currentThread] isMainThread]) &#123;</span><br><span class="line">        [self _evaluateJavascript:javascriptCommand];</span><br><span class="line"></span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        dispatch_sync(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        [self _evaluateJavascript:javascriptCommand];</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后再看一下JS的handleMessageFromObjC方法是如何找到相应的回调函数的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">function _dispatchMessageFromObjC(messageJSON) &#123;</span><br><span class="line">    if (dispatchMessagesWithTimeoutSafety) &#123;</span><br><span class="line">        setTimeout(_doDispatchMessageFromObjC);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        _doDispatchMessageFromObjC();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function _doDispatchMessageFromObjC() &#123;</span><br><span class="line">        var message = JSON.parse(messageJSON);</span><br><span class="line">        var messageHandler;</span><br><span class="line">        var responseCallback;</span><br><span class="line"></span><br><span class="line">        if (message.responseId) &#123;</span><br><span class="line">            //之前OC的flushMessageQueue方法中已经添加了responseId,那么进到这个判断，根据responseId找到回调函数，然后执行</span><br><span class="line">            responseCallback = responseCallbacks[message.responseId];</span><br><span class="line">            if (!responseCallback) &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            responseCallback(message.responseData);</span><br><span class="line">            delete responseCallbacks[message.responseId];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (message.callbackId) &#123;</span><br><span class="line">                var callbackResponseId = message.callbackId;</span><br><span class="line">                responseCallback = function(responseData) &#123;</span><br><span class="line">                _doSend(&#123; handlerName:message.handlerName, responseId:callbackResponseId, responseData:responseData &#125;);</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        var handler = messageHandlers[message.handlerName];</span><br><span class="line">        if (!handler) &#123;</span><br><span class="line">            console.log(&quot;WebViewJavascriptBridge: WARNING: no handler for message from ObjC:&quot;, message);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            handler(message.data, responseCallback);</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，JS调用OC注册的函数流程完结，难点在于responseCallback如何执行，要记住responseCallback是由调用方传入的参数，应由调用方执行。<br>4.OC调用JS函数原理（这里以UIWebView为例）<br>首先需要JS注册函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bridge.registerHandler(&apos;testJavascriptHandler&apos;, function(data, responseCallback) &#123;</span><br><span class="line">    log(&apos;ObjC called testJavascriptHandler with&apos;, data)</span><br><span class="line">    var responseData = &#123; &apos;Javascript Says&apos;:&apos;Right back atcha!&apos; &#125;</span><br><span class="line">    log(&apos;JS responding with&apos;, responseData)</span><br><span class="line">    responseCallback(responseData)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>看一下这个方法的实现，在WebViewJavascriptBridge_js中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function registerHandler(handlerName, handler) &#123;</span><br><span class="line">    messageHandlers[handlerName] = handler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到这里和OC注册函数时的操作一样，都是将handlerName为key，以handler为value储存在一个叫做messageHandlers的字典中，注册就完成了<br>然后就是OC开始调用这个函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[_bridge callHandler:@&quot;testJavascriptHandler&quot; data:@&#123; @&quot;foo&quot;:@&quot;before ready&quot; &#125;];</span><br></pre></td></tr></table></figure></p>
+<p>看一下这个方法的实现，在WebViewJavascriptBridge中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">- (void)callHandler:(NSString *)handlerName data:(id)data responseCallback:(WVJBResponseCallback)responseCallback &#123;</span><br><span class="line">    [_base sendData:data responseCallback:responseCallback handlerName:handlerName];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)sendData:(id)data responseCallback:(WVJBResponseCallback)responseCallback handlerName:(NSString*)handlerName &#123;</span><br><span class="line">    NSMutableDictionary* message = [NSMutableDictionary dictionary];</span><br><span class="line"></span><br><span class="line">    if (data) &#123;</span><br><span class="line">        message[@&quot;data&quot;] = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (responseCallback) &#123;//注意这里，如果有responseCallback，就会callbackId为key存起来</span><br><span class="line">        NSString* callbackId = [NSString stringWithFormat:@&quot;objc_cb_%ld&quot;, ++_uniqueId];</span><br><span class="line">        self.responseCallbacks[callbackId] = [responseCallback copy];</span><br><span class="line">        message[@&quot;callbackId&quot;] = callbackId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (handlerName) &#123;</span><br><span class="line">        message[@&quot;handlerName&quot;] = handlerName;</span><br><span class="line">    &#125;</span><br><span class="line">    [self _queueMessage:message];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)_queueMessage:(WVJBMessage*)message &#123;</span><br><span class="line">    if (self.startupMessageQueue) &#123;</span><br><span class="line">        [self.startupMessageQueue addObject:message];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        [self _dispatchMessage:message];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)_dispatchMessage:(WVJBMessage*)message &#123;</span><br><span class="line">    NSString *messageJSON = [self _serializeMessage:message pretty:NO];</span><br><span class="line">    [self _log:@&quot;SEND&quot; json:messageJSON];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\\&quot; withString:@&quot;\\\\&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\&quot;&quot; withString:@&quot;\\\&quot;&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\&apos;&quot; withString:@&quot;\\\&apos;&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\n&quot; withString:@&quot;\\n&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\r&quot; withString:@&quot;\\r&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\f&quot; withString:@&quot;\\f&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\u2028&quot; withString:@&quot;\\u2028&quot;];</span><br><span class="line">    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@&quot;\u2029&quot; withString:@&quot;\\u2029&quot;];</span><br><span class="line"></span><br><span class="line">    NSString* javascriptCommand = [NSString stringWithFormat:@&quot;WebViewJavascriptBridge._handleMessageFromObjC(&apos;%@&apos;);&quot;, messageJSON];</span><br><span class="line">    if ([[NSThread currentThread] isMainThread]) &#123;</span><br><span class="line">        [self _evaluateJavascript:javascriptCommand];</span><br><span class="line"></span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        dispatch_sync(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            [self _evaluateJavascript:javascriptCommand];</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可见最终还是执行到WebViewJavascriptBridge_js中的handleMessageFromObjC方法才能拿到要执行的JS代码，那我们看一下这里跟JS调用OC函数不同在哪里<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">function _dispatchMessageFromObjC(messageJSON) &#123;</span><br><span class="line">    if (dispatchMessagesWithTimeoutSafety) &#123;</span><br><span class="line">        setTimeout(_doDispatchMessageFromObjC);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        _doDispatchMessageFromObjC();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function _doDispatchMessageFromObjC() &#123;</span><br><span class="line">        var message = JSON.parse(messageJSON);</span><br><span class="line">        var messageHandler;</span><br><span class="line">        var responseCallback;</span><br><span class="line"></span><br><span class="line">        if (message.responseId) &#123;</span><br><span class="line">            responseCallback = responseCallbacks[message.responseId];</span><br><span class="line">            if (!responseCallback) &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            responseCallback(message.responseData);</span><br><span class="line">            delete responseCallbacks[message.responseId];</span><br><span class="line">        &#125; else &#123;//注意这次会进入下面的判断</span><br><span class="line">            if (message.callbackId) &#123;//如果有responseCallback，注意之前的处理</span><br><span class="line">                var callbackResponseId = message.callbackId;</span><br><span class="line">                //注意此处它为responseCallback赋值了一个函数，当执行responseCallback时会执行_doSend方法，并且以responseId为key传入了callbackResponseId</span><br><span class="line">                responseCallback = function(responseData) &#123;</span><br><span class="line">                _doSend(&#123; handlerName:message.handlerName, responseId:callbackResponseId, responseData:responseData &#125;);</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            //找到相应的handler并执行</span><br><span class="line">            var handler = messageHandlers[message.handlerName];</span><br><span class="line">            if (!handler) &#123;</span><br><span class="line">                console.log(&quot;WebViewJavascriptBridge: WARNING: no handler for message from ObjC:&quot;, message);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                handler(message.data, responseCallback);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此处关键在于responseCallback是OC传入的代码块，应该由OC执行，所以JS调用_doSend方法改变iframe.src发起请求，通知OC执行responseCallback<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function _doSend(message, responseCallback) &#123;</span><br><span class="line">    if (responseCallback) &#123;</span><br><span class="line">        var callbackId = &apos;cb_&apos;+(uniqueId++)+&apos;_&apos;+new Date().getTime();</span><br><span class="line">        responseCallbacks[callbackId] = responseCallback;</span><br><span class="line">        message[&apos;callbackId&apos;] = callbackId;</span><br><span class="line">    &#125;</span><br><span class="line">    sendMessageQueue.push(message);</span><br><span class="line">    messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + &apos;://&apos; + QUEUE_HAS_MESSAGE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后OC拦截到请求的操作之前已经过了一遍，那不同的地方在哪呢，那就是有了responseId<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">- (void)flushMessageQueue:(NSString *)messageQueueString&#123;</span><br><span class="line">    if (messageQueueString == nil || messageQueueString.length == 0) &#123;</span><br><span class="line">        NSLog(@&quot;WebViewJavascriptBridge: WARNING: ObjC got nil while fetching the message queue JSON from webview. This can happen if the WebViewJavascriptBridge JS is not currently present in the webview, e.g if the webview just loaded a new page.&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    id messages = [self _deserializeMessageJSON:messageQueueString];</span><br><span class="line">        for (WVJBMessage* message in messages) &#123;</span><br><span class="line">        if (![message isKindOfClass:[WVJBMessage class]]) &#123;</span><br><span class="line">            NSLog(@&quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&quot;, [message class], message);</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        [self _log:@&quot;RCVD&quot; json:message];</span><br><span class="line"></span><br><span class="line">        NSString* responseId = message[@&quot;responseId&quot;];</span><br><span class="line">        if (responseId) &#123;//有了responseId，这很关键，根据responseId找到responseCallback并执行</span><br><span class="line">            WVJBResponseCallback responseCallback = _responseCallbacks[responseId];</span><br><span class="line">            responseCallback(message[@&quot;responseData&quot;]);</span><br><span class="line">            [self.responseCallbacks removeObjectForKey:responseId];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            WVJBResponseCallback responseCallback = NULL;</span><br><span class="line">            NSString* callbackId = message[@&quot;callbackId&quot;];</span><br><span class="line">            if (callbackId) &#123;</span><br><span class="line">                responseCallback = ^(id responseData) &#123;</span><br><span class="line">            if (responseData == nil) &#123;</span><br><span class="line">                responseData = [NSNull null];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            WVJBMessage* msg = @&#123; @&quot;responseId&quot;:callbackId, @&quot;responseData&quot;:responseData &#125;;</span><br><span class="line">                [self _queueMessage:msg];</span><br><span class="line">            &#125;;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                responseCallback = ^(id ignoreResponseData) &#123;</span><br><span class="line">                // Do nothing</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            WVJBHandler handler = self.messageHandlers[message[@&quot;handlerName&quot;]];</span><br><span class="line"></span><br><span class="line">            if (!handler) &#123;</span><br><span class="line">                NSLog(@&quot;WVJBNoHandlerException, No handler for message from JS: %@&quot;, message);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            handler(message[@&quot;data&quot;], responseCallback);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>找到了之前存储的responseCallback并执行，到此OC调用JS注册的函数流程完毕。<br><strong>三.总结</strong><br>受限于JS知识水平不足，有些地方分析的不太好，不对之处还望指正，不胜感激！</p>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2017/01/11/iOS-自带loading动画的登陆按钮/" title="iOS~自带loading动画的登陆按钮">
+                    <div class="prevTitle">iOS~自带loading动画的登陆按钮</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:liyanbo6666@163.com" class="iconfont-archer email" title="email"></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/VeteranDriver" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://www.jianshu.com/u/c60389404c9e" class="iconfont-archer others" target="_blank" title="others"></a>
+            
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 8
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/25</span><a class="archive-post-title" href="/2017/07/25/Hybrid-iOS与JS交互那点事儿之WebViewJavaScriptBridge/">Hybrid~iOS与JS交互那点事儿之WebViewJavaScriptBridge</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/11</span><a class="archive-post-title" href="/2017/01/11/iOS-自带loading动画的登陆按钮/">iOS~自带loading动画的登陆按钮</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href="/2017/01/09/iOS-图片裁剪圆角矩形/">iOS~图片裁剪圆角矩形</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2016 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/15</span><a class="archive-post-title" href="/2016/11/15/iOS-系统or自定义？总有一款转场动画让你独一无二（思路篇）/">iOS~系统or自定义？总有一款转场动画让你独一无二（思路篇）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/08</span><a class="archive-post-title" href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/">iOS~如何优雅的创建一个三级联动界面</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href="/2016/08/10/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/05</span><a class="archive-post-title" href="/2016/08/05/iOS-用UICollectionView实现酷炫的推拉效果/">iOS~用UICollectionView实现酷炫的推拉效果</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/05</span><a class="archive-post-title" href="/2016/08/05/iOS-判断应用是否有定位权限/">iOS~判断应用是否有定位权限</a>
+        </li>
+    
+    </ul></div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br>
+    1、请确保node版本大于6.2<br>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "John Doe"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

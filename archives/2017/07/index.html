@@ -346,22 +346,22 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href="/2016/10/08/iOS-如何优雅的创建一个三级联动界面/">
+        <a class="abstract-title" href="/2017/07/25/Hybrid-iOS与JS交互那点事儿之WebViewJavaScriptBridge/">
             
-                <span>iOS~如何优雅的创建一个三级联动界面</span>
+                <span>Hybrid~iOS与JS交互那点事儿之WebViewJavaScriptBridge</span>
         </a>
         <div class="abstract-content">
-            
-如上图所示，这是一个相当复杂的三级联动界面，如果我们毫无章法的将代码堆积在父视图控制器中，无疑会使控制器变的臃肿，代码的易读性将会很差，不便于日后维护；代码也是一种艺术，我们何不做的优雅一些？
+            WebViewJavaScriptBridge是被使用最多，也是最好用的移动端与JS交互的第三方框架，在此总结一下它的使用方法和内部原理。
 
-1.思路为了避免父视图控制器的代码臃肿，降低代码之间的耦合性，此处应采用组件化的设计模式，将控件从控制器中抽离出来，并可以自处业务逻辑，将父视图控制器作为一个纯粹的容器视图，传递数据的中间者；而子控件在被用户交互时通过代理、block回调或者通知将信息传递给父视图控制器，进而父视图控制器做出相应操作；那么我们首先分析一下这个界面的结构并分析如何抽取其中的控件：
-
-红线标出：左边的竖向选择列表和...
+一.使用方法iOS端（这里以UIWebView为例）1.导入头文件1#import &quot;WebViewJavascriptBridge.h&quot;
+2.声明桥接对象1@property WebViewJavascriptBridge* bridge;
+3.初始化桥接对象1self.bridge = [WebViewJavascriptBridge bridgeForWebView:webView];
+4.注册函数123456789101...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/10/08</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/07/25</span>
             </div>
             <!-- tags  -->
             
