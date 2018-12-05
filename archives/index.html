@@ -365,6 +365,31 @@
         </div>
     </article>
     
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href="/2017/12/05/iOS-图片裁剪圆角矩形/">
+            
+                <span>iOS~图片裁剪圆角矩形</span>
+        </a>
+        <div class="abstract-content">
+            写了一个将矩形图片裁剪为圆角矩形的UIImage分类，可以避免大量的使用masksToBounds从而产生离屏渲染。
+
+1.思路首先利用CoreGraphics绘制出一个圆角矩形的上下文，然后将图片画到上下文中，最后通过上下文获取裁剪好的图片。2.核心代码12345678910111213141516171819202122- (UIImage *)setCornerWithRadius:(CGFloat)radius andSize:(CGSize)size&#123;    //开启图形上下文    UIGraphicsBeginImageContext(size);    //绘制...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/12/05</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
     <!-- paginator  -->
     
 </main>
@@ -470,9 +495,16 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 1
+        Total : 2
         </div>
         <!-- search  -->
         
@@ -489,6 +521,20 @@
     
         <li class="archive-post-item">
             <span class="archive-post-date">12/05</span><a class="archive-post-title" href="/2018/12/05/iOS-一行代实现拍照、录像和相册功能/">iOS~一行代实现拍照、录像和相册功能</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href="/2017/12/05/iOS-图片裁剪圆角矩形/">iOS~图片裁剪圆角矩形</a>
         </li>
     
     </ul></div>
